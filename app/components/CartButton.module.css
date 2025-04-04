@@ -1,0 +1,56 @@
+/* app/components/CartButton.module.css */
+.cartButton {
+    position: relative;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .cartButton:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .cartButton svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    background-color: var(--danger);
+    color: white;
+    border-radius: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .badgeAnimated {
+    animation: pulse 0.5s ease-in-out;
+  }

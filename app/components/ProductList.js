@@ -1,82 +1,61 @@
-// components/ProductList.js
+// app/components/ProductList.js
 'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { loadStripe } from '@stripe/stripe-js';
-
-// Initialiser Stripe avec votre clé publique
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+import { useCart } from '../context/CartContext';
+import styles from './ProductList.module.css';
 
 export default function ProductList({ products }) {
   const [loadingId, setLoadingId] = useState(null);
+  const { addToCart } = useCart();
 
-  async function handleBuyNow(product) {
+  function handleAddToCart(product) {
     setLoadingId(product.id);
     
-    // Créer une session de checkout avec Stripe
-    const stripe = await stripePromise;
-    
-    // Déterminer l'URL de l'image (si disponible)
-    const imageUrl = product.image && product.image.length > 0 
-      ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${product.image[0].url}`
-      : '';
-    
-    const response = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        items: [
-          {
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            image: imageUrl,
-            quantity: 1,
-          }
-        ]
-      }),
-    });
-
-    const session = await response.json();
-    
-    // Rediriger vers Checkout
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
-    
-    if (result.error) {
-      console.error(result.error.message);
-    }
-    
-    setLoadingId(null);
+    // Simuler un petit délai pour le feedback visuel
+    setTimeout(() => {
+      addToCart(product);
+      setLoadingId(null);
+    }, 300);
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className={styles.productGrid}>
       {products.map((product) => (
-        <div key={product.id} className="border rounded-lg p-4 flex flex-col">
+        <div key={product.id} className={styles.productCard}>
           {product.image && product.image.length > 0 && (
-            <div className="relative w-full h-48 mb-4">
+            <div className={styles.imageContainer}>
               <Image
                 src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${product.image[0].url}`}
                 alt={product.name}
                 fill
-                className="object-cover rounded-md"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
               />
             </div>
           )}
-          <h2 className="text-xl font-semibold">{product.name}</h2>
-          <p className="text-lg font-bold my-2">{product.price} €</p>
-          <button
-            onClick={() => handleBuyNow(product)}
-            disabled={loadingId === product.id}
-            className="mt-auto bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded disabled:bg-gray-400"
-          >
-            {loadingId === product.id ? 'Chargement...' : 'Acheter'}
-          </button>
+          <div className={styles.productInfo}>
+            <h2 className={styles.productName}>{product.name}</h2>
+            <p className={styles.productDescription}>{product.description}</p>
+            <p className={styles.productPrice}>{product.price} €</p>
+            <button
+              onClick={() => handleAddToCart(product)}
+              disabled={loadingId === product.id}
+              className={styles.addButton}
+            >
+              {loadingId === product.id ? (
+                'Ajout en cours...'
+              ) : (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  Ajouter au panier
+                </>
+              )}
+            </button>
+          </div>
         </div>
       ))}
     </div>

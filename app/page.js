@@ -6,10 +6,13 @@ export default async function Home() {
   const products = await getProducts();
   
   return (
-    <main className="container mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold text-center mb-10">Bienvenue sur ma boutique</h1>
+    <div className="container mx-auto py-10 px-4">
+      <h1 className="text-3xl font-bold text-center mb-6">Bienvenue sur ma boutique</h1>
+      <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+        Découvrez notre sélection de produits de qualité. Ajoutez les articles à votre panier et finalisez votre commande en toute simplicité.
+      </p>
       <ProductList products={products} />
-    </main>
+    </div>
   );
 }
 

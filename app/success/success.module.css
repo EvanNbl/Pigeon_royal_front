@@ -1,0 +1,89 @@
+/* app/success/success.module.css */
+.successContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #f9fafb;
+  }
+  
+  .successCard {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    max-width: 32rem;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .successIcon {
+    color: var(--success);
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .successIcon svg {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto;
+  }
+  
+  .successTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .successMessage {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+  
+  .orderNumber {
+    display: inline-block;
+    background-color: #f3f4f6;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-family: var(--font-geist-mono), monospace;
+    margin-bottom: 1.5rem;
+  }
+  
+  .returnButton {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .returnButton:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .returnButton svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate {
+    animation: fadeIn 0.6s ease-out;
+  }

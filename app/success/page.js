@@ -4,37 +4,49 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useCart } from '../context/CartContext';
+import styles from './success.module.css';
 
 export default function Success() {
   const searchParams = useSearchParams();
   const session_id = searchParams.get('session_id');
   const [status, setStatus] = useState('loading');
+  const { clearCart } = useCart();
 
   useEffect(() => {
     if (session_id) {
-      // Vous pourriez vérifier la session ici si nécessaire
+      // Vider le panier après un achat réussi
+      clearCart();
       setStatus('success');
     }
-  }, [session_id]);
+  }, [session_id, clearCart]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-8">
-      <div className="bg-white rounded-lg shadow-md p-8 max-w-md w-full text-center">
-        <h1 className="text-2xl font-bold mb-4">Merci pour votre achat !</h1>
-        
-        {status === 'loading' && <p>Chargement...</p>}
-        
-        {status === 'success' && (
-          <>
-            <p className="mb-2">Votre commande a été traitée avec succès.</p>
-            <p>Vous recevrez un email de confirmation très bientôt.</p>
-          </>
-        )}
-        
-        <Link href="/" className="inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mt-6">
-          Retour à la boutique
-        </Link>
-      </div>
+    <div className={styles.container}>
+        <div className={styles.content}>
+            {status === 'loading' ? (
+            <p>Chargement...</p>
+            ) : (
+            <>
+                <h1 className={styles.title}>Paiement réussi !</h1>
+                <p className={styles.message}>
+                Merci pour votre achat. Votre commande a été traitée avec succès.
+                </p>
+                <p>
+                    Numero de commande : <strong>{session_id}</strong>
+                </p>
+                <p>
+                    date de commande : <strong>{new Date().toLocaleDateString()}</strong>
+                </p>
+                <Link href="/" className={styles.link}>
+                Retour à la boutique
+                </Link>
+            </>
+            )}
+        </div>
+        <div className={styles.imageContainer}>
+            <img src="/success.png" alt="Success" className={styles.image} />
+        </div>
     </div>
-  );
+    );
 }
