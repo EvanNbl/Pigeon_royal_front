@@ -20,6 +20,7 @@ export default function ProductList({ products }) {
     }, 300);
   }
 
+  console.log('Products image:', products[0]?.image[0]?.url);
   return (
     <div className={styles.productGrid}>
       {products.map((product) => (
@@ -27,7 +28,7 @@ export default function ProductList({ products }) {
           {product.image && product.image.length > 0 && (
             <div className={styles.imageContainer}>
               <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${product.image[0].url}`}
+                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${products[0]?.image[0]?.url}`}
                 alt={product.name}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

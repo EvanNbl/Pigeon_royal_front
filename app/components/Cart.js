@@ -64,9 +64,7 @@ export default function Cart() {
       name: item.name,
       description: item.description,
       price: item.price,
-      image: item.image && item.image.length > 0 
-        ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${item.image[0].url}`
-        : '',
+      image: item.image && item.image.length > 0 ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${item.image[0].url}` : null,
       quantity: item.quantity,
     }));
     
