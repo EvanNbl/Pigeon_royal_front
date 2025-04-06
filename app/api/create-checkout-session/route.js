@@ -16,12 +16,9 @@ export async function POST(request) {
           currency: 'eur',
           product_data: {
             name: item.name,
-            description: item.description,
-            images: [
-              item.image && item.image.length > 0
-                ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${item.image[0].url}`
-                : [],
-            ],
+            description: item.description.length > 100 ?
+              item.description.substring(0, 100) + '...' :
+              item.description,
           },
           unit_amount: Math.round(item.price * 100), // Stripe utilise les centimes
         },
