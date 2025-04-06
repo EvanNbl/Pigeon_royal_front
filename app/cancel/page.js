@@ -1,13 +1,13 @@
-// app/success/page.js
+// app/cancel/page.js
 'use client';
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
-import styles from './success.module.css';
+import styles from './cancel.module.css';
 
-export default function Success() {
+export default function cancel() {
   const searchParams = useSearchParams();
   const session_id = searchParams.get('session_id');
   const [status, setStatus] = useState('loading');
@@ -17,7 +17,7 @@ export default function Success() {
     if (session_id) {
       // Vider le panier après un achat réussi
       clearCart();
-      setStatus('success');
+      setStatus('cancel');
     }
   }, [session_id, clearCart]);
 
@@ -28,15 +28,9 @@ export default function Success() {
             <p>Chargement...</p>
             ) : (
             <>
-                <h1 className={styles.title}>Paiement réussi !</h1>
+                <h1 className={styles.title}>Paiement annulé</h1>
                 <p className={styles.message}>
-                Merci pour votre achat. Votre commande a été traitée avec succès.
-                </p>
-                <p>
-                    Numero de commande : <strong>{session_id}</strong>
-                </p>
-                <p>
-                    date de commande : <strong>{new Date().toLocaleDateString()}</strong>
+                    Votre paiement a été annulé. Si vous avez des questions, n'hésitez pas à nous contacter.
                 </p>
                 <Link href="/" className={styles.link}>
                     Retour à la boutique
