@@ -1,4 +1,4 @@
-// app/components/ProductDetail.js
+// app/components/ProductDetail.js (version modifiée)
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -16,6 +16,9 @@ export default function ProductDetail({ product }) {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const { addToCart } = useCart();
+
+  // Logging pour debug
+  console.log("Product received in ProductDetail:", product);
 
   // Définir la couleur et la taille par défaut au chargement
   useEffect(() => {
@@ -67,6 +70,11 @@ export default function ProductDetail({ product }) {
     if (quantity > 1) {
       setQuantity(q => q - 1);
     }
+  }
+
+  // Vérifier si le produit est correctement chargé
+  if (!product || !product.name) {
+    return <div className={styles.loading}>Chargement du produit...</div>;
   }
 
   return (

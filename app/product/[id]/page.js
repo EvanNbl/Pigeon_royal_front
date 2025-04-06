@@ -48,32 +48,29 @@ async function getProduct(id) {
     
     const response = await res.json();
     
-    // Si le produit existe
+    // Vérifier si les données existent
     if (response.data) {
-      // Extraire les données du produit
+      // Adapter la structure à ce que votre composant attend
+      // Basé sur la réponse JSON que vous avez partagée
       const productData = {
-        ...response.data.attributes,
-        id: response.data.id,
+        ...response.data,
         documentId: id // Garder l'ID original pour les liens
       };
       
-      // Transformer les relations (colors, sizes) en formats utilisables
-      if (response.data.attributes.colors?.data) {
-        productData.colors = response.data.attributes.colors.data.map(color => ({
-          id: color.id,
-          name: color.attributes.name,
-          code: color.attributes.code,
-          display_order: color.attributes.display_order
-        })).sort((a, b) => a.display_order - b.display_order);
+      // Si les couleurs existent mais ont une structure différente
+      if (productData.colors) {
+        // S'assurer que les couleurs sont triées par display_order si disponible
+        productData.colors.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
       }
       
-      if (response.data.attributes.sizes?.data) {
-        productData.sizes = response.data.attributes.sizes.data.map(size => ({
-          id: size.id,
-          name: size.attributes.name,
-          display_order: size.attributes.display_order
-        })).sort((a, b) => a.display_order - b.display_order);
+      // Si les tailles existent mais ont une structure différente
+      if (productData.sizes) {
+        // S'assurer que les tailles sont triées par display_order si disponible
+        productData.sizes.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
       }
+
+      // Debug: voir la structure exacte du produit avant de la renvoyer
+      console.log('Product structure:', JSON.stringify(productData, null, 2));
       
       return productData;
     }
