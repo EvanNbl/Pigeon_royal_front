@@ -1,211 +1,232 @@
 /* app/components/Cart.module.css */
 .cartOverlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 50;
-    display: flex;
-    justify-content: flex-end;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-  
-  .cartOverlayOpen {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  .cartDrawer {
-    width: 100%;
-    max-width: 420px;
-    height: 100%;
-    background-color: white;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-  }
-  
-  .cartOverlayOpen .cartDrawer {
-    transform: translateX(0);
-  }
-  
-  .cartHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .closeButton {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--foreground);
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s;
-  }
-  
-  .closeButton:hover {
-    background-color: var(--secondary);
-  }
-  
-  .cartContent {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 1rem;
-  }
-  
-  .emptyCart {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #6b7280;
-  }
-  
-  .emptyCartIcon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    color: #d1d5db;
-  }
-  
-  .cartItem {
-    display: flex;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .itemImage {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin-right: 1rem;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  .itemDetails {
-    flex-grow: 1;
-  }
-  
-  .itemName {
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-  }
-  
-  .itemPrice {
-    color: #6b7280;
-    margin-bottom: 0.5rem;
-  }
-  
-  .quantityControl {
-    display: flex;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-  
-  .quantityButton {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border);
-    background-color: white;
-    cursor: pointer;
-  }
-  
-  .quantityButton:first-child {
-    border-radius: 4px 0 0 4px;
-  }
-  
-  .quantityButton:last-child {
-    border-radius: 0 4px 4px 0;
-  }
-  
-  .quantityValue {
-    width: 36px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .removeButton {
-    color: var(--danger);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .removeButton svg {
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
-  }
-  
-  .cartFooter {
-    border-top: 1px solid var(--border);
-    padding: 1rem;
-  }
-  
-  .cartTotal {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
-  }
-  
-  .cartButtons {
-    display: flex;
-    gap: 0.5rem;
-  }
-  
-  .checkoutButton {
-    flex: 2;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .checkoutButton:hover {
-    background-color: var(--primary-hover);
-  }
-  
-  .clearButton {
-    flex: 1;
-    background-color: var(--secondary);
-    color: var(--foreground);
-    border: none;
-    border-radius: 4px;
-    padding: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .clearButton:hover {
-    background-color: var(--secondary-hover);
-  }
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: flex;
+  justify-content: flex-end;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cartOverlayOpen {
+  visibility: visible;
+  opacity: 1;
+}
+
+.cartDrawer {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.cartOverlayOpen .cartDrawer {
+  transform: translateX(0);
+}
+
+.cartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--foreground);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: var(--secondary);
+}
+
+.cartContent {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.emptyCart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+}
+
+.emptyCartIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.cartItem {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.itemImage {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-right: 1rem;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.itemDetails {
+  flex-grow: 1;
+}
+
+.itemName {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.variantInfo {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.colorInfo, .sizeInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.colorDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.itemPrice {
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.quantityButton {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background-color: white;
+  cursor: pointer;
+}
+
+.quantityButton:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.quantityButton:nth-child(3) {
+  border-radius: 0 4px 4px 0;
+}
+
+.quantityValue {
+  width: 36px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.removeButton {
+  color: var(--danger);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.removeButton svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.cartFooter {
+  border-top: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.cartTotal {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
+.cartButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.checkoutButton {
+  flex: 2;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.checkoutButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.clearButton {
+  flex: 1;
+  background-color: var(--secondary);
+  color: var(--foreground);
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clearButton:hover {
+  background-color: var(--secondary-hover);
+}

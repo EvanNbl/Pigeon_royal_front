@@ -66,6 +66,11 @@ export default function Cart() {
       price: item.price,
       image: item.image && item.image.length > 0 ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${item.image[0].url}` : null,
       quantity: item.quantity,
+      // Ajouter les infos de variante au nom
+      variantInfo: [
+        item.selectedColor ? `Couleur: ${item.selectedColor.name}` : null,
+        item.selectedSize ? `Taille: ${item.selectedSize.name}` : null
+      ].filter(Boolean).join(', ')
     }));
     
     const response = await fetch('/api/create-checkout-session', {
@@ -115,7 +120,7 @@ export default function Cart() {
             </div>
           ) : (
             cart.map((item) => (
-              <div key={item.id} className={styles.cartItem}>
+              <div key={item.variantId || item.id} className={styles.cartItem}>
                 {item.image && item.image.length > 0 && (
                   <div className={styles.itemImage}>
                     <Image
@@ -129,11 +134,29 @@ export default function Cart() {
                 )}
                 <div className={styles.itemDetails}>
                   <h3 className={styles.itemName}>{item.name}</h3>
+                  
+                  {/* Afficher les infos de couleur et taille */}
+                  {(item.selectedColor || item.selectedSize) && (
+                    <div className={styles.variantInfo}>
+                      {item.selectedColor && (
+                        <div className={styles.colorInfo}>
+                          <span className={styles.colorDot} style={{ backgroundColor: item.selectedColor.code }}></span>
+                          {item.selectedColor.name}
+                        </div>
+                      )}
+                      {item.selectedSize && (
+                        <div className={styles.sizeInfo}>
+                          Taille: {item.selectedSize.name}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
                   <p className={styles.itemPrice}>{item.price} €</p>
                   
                   <div className={styles.quantityControl}>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => updateQuantity(item.variantId || item.id, item.quantity - 1)}
                       className={styles.quantityButton}
                       disabled={item.quantity <= 1}
                     >
@@ -141,14 +164,14 @@ export default function Cart() {
                     </button>
                     <span className={styles.quantityValue}>{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => updateQuantity(item.variantId || item.id, item.quantity + 1)}
                       className={styles.quantityButton}
                     >
                       +
                     </button>
                     
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.variantId || item.id)}
                       className={styles.removeButton}
                       aria-label="Supprimer l'article"
                     >

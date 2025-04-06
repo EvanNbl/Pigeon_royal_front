@@ -25,33 +25,44 @@ export function CartProvider({ children }) {
   useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem('cart', JSON.stringify(cart));
+    } else {
+      localStorage.removeItem('cart');
     }
   }, [cart]);
 
-  // Ajouter un produit au panier
-  const addToCart = (product) => {
+  // Ajouter un produit au panier avec une quantité spécifiée
+  const addToCart = (product, quantity = 1) => {
     setCart((prevCart) => {
+      // Identifier unique pour la variante du produit 
+      const productId = product.variantId || product.id;
+      
       // Vérifier si le produit est déjà dans le panier
-      const existingItemIndex = prevCart.findIndex(item => item.id === product.id);
+      const existingItemIndex = prevCart.findIndex(item => 
+        (item.variantId && item.variantId === productId) || 
+        (!item.variantId && item.id === productId)
+      );
       
       if (existingItemIndex > -1) {
         // Augmenter la quantité si le produit existe déjà
         const updatedCart = [...prevCart];
         updatedCart[existingItemIndex] = {
           ...updatedCart[existingItemIndex],
-          quantity: updatedCart[existingItemIndex].quantity + 1
+          quantity: updatedCart[existingItemIndex].quantity + quantity
         };
         return updatedCart;
       } else {
-        // Ajouter le nouveau produit avec une quantité de 1
-        return [...prevCart, { ...product, quantity: 1 }];
+        // Ajouter le nouveau produit avec la quantité spécifiée
+        return [...prevCart, { ...product, quantity: quantity }];
       }
     });
   };
 
   // Supprimer un produit du panier
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+    setCart((prevCart) => prevCart.filter(item => 
+      (item.variantId && item.variantId !== productId) || 
+      (!item.variantId && item.id !== productId)
+    ));
   };
 
   // Mettre à jour la quantité d'un produit
@@ -59,9 +70,10 @@ export function CartProvider({ children }) {
     if (quantity < 1) return;
     
     setCart((prevCart) => 
-      prevCart.map(item => 
-        item.id === productId ? { ...item, quantity } : item
-      )
+      prevCart.map(item => {
+        const itemId = item.variantId || item.id;
+        return itemId === productId ? { ...item, quantity } : item;
+      })
     );
   };
 

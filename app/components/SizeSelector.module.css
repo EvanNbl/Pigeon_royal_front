@@ -1,0 +1,43 @@
+/* app/components/SizeSelector.module.css */
+.sizeSelector {
+    margin-bottom: 1.5rem;
+  }
+  
+  .label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .sizeOption {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--border);
+    background-color: white;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .sizeOption:hover {
+    border-color: var(--primary);
+    background-color: var(--secondary);
+  }
+  
+  .sizeOption.selected {
+    border-color: var(--primary);
+    background-color: var(--primary);
+    color: white;
+  }

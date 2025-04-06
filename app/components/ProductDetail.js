@@ -1,27 +1,47 @@
 // app/components/ProductDetail.js
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import styles from './ProductDetail.module.css';
+import ColorSelector from './ColorSelector';
+import SizeSelector from './SizeSelector';
 
 export default function ProductDetail({ product }) {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
   const { addToCart } = useCart();
+
+  // Définir la couleur et la taille par défaut au chargement
+  useEffect(() => {
+    if (product.colors && product.colors.length > 0) {
+      setSelectedColor(product.colors[0]);
+    }
+    if (product.sizes && product.sizes.length > 0) {
+      setSelectedSize(product.sizes[0]);
+    }
+  }, [product]);
 
   function handleAddToCart() {
     setLoading(true);
     
+    // Créer une variante de produit avec les options sélectionnées
+    const productVariant = {
+      ...product,
+      selectedColor: selectedColor,
+      selectedSize: selectedSize,
+      variantId: `${product.id}_${selectedColor?.id || 'no-color'}_${selectedSize?.id || 'no-size'}`
+    };
+    
     // Simuler un petit délai pour le feedback visuel
     setTimeout(() => {
       // Ajouter le produit au panier avec la quantité spécifiée
-      for (let i = 0; i < quantity; i++) {
-        addToCart(product);
-      }
+      addToCart(productVariant, quantity);
       setLoading(false);
       setAddedToCart(true);
       
@@ -85,6 +105,19 @@ export default function ProductDetail({ product }) {
             <p>{product.description}</p>
           </div>
           
+          {/* Sélecteurs de couleur et de taille */}
+          <ColorSelector 
+            colors={product.colors || []} 
+            selectedColor={selectedColor} 
+            onChange={setSelectedColor} 
+          />
+          
+          <SizeSelector 
+            sizes={product.sizes || []} 
+            selectedSize={selectedSize} 
+            onChange={setSelectedSize} 
+          />
+          
           <div className={styles.actions}>
             <div className={styles.quantityControl}>
               <button 
@@ -113,7 +146,9 @@ export default function ProductDetail({ product }) {
             
             <button
               onClick={handleAddToCart}
-              disabled={loading}
+              disabled={loading || 
+                (product.colors?.length > 0 && !selectedColor) || 
+                (product.sizes?.length > 0 && !selectedSize)}
               className={styles.addToCartButton}
             >
               {loading ? 'Ajout en cours...' : 'Ajouter au panier'}

@@ -91,19 +91,31 @@ export async function POST(request) {
     // Créer une session Checkout
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: items.map(item => ({
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: item.name,
-            description: item.description.length > 100 ?
-              item.description.substring(0, 100) + '...' :
-              item.description,
+      line_items: items.map(item => {
+        // Construire le nom du produit avec les infos de variante
+        let displayName = item.name;
+        
+        // Ajouter les infos de variante si présentes
+        if (item.variantInfo) {
+          displayName = `${displayName} (${item.variantInfo})`;
+        }
+        
+        return {
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: displayName,
+              description: item.description.length > 100 ?
+                item.description.substring(0, 100) + '...' :
+                item.description,
+              // Si disponible, ajouter l'image
+              images: item.image ? [item.image] : [],
+            },
+            unit_amount: Math.round(item.price * 100), // Stripe utilise les centimes
           },
-          unit_amount: Math.round(item.price * 100), // Stripe utilise les centimes
-        },
-        quantity: item.quantity,
-      })),
+          quantity: item.quantity,
+        };
+      }),
       // Collecte de l'adresse de livraison
       shipping_address_collection: {
         allowed_countries: ['FR', 'BE', 'CH', 'LU'], // Pays où vous livrez
